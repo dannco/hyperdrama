@@ -94,11 +94,15 @@ public class Chapter extends ChapterId {
 		back.removeIf(chapter -> !chapter.valid());
 		forward.removeIf(chapter -> !chapter.valid());
 		Optional.ofNullable(context.chapters.lowerEntry(getId())).ifPresent((entry) -> {
+			if (!entry.getValue().key.equals(key))
+				return;
 			if (!back.contains(entry.getValue())) {
 				back.add(entry.getValue());
 			}
 		});
 		Optional.ofNullable(context.chapters.higherEntry(getId())).ifPresent((entry) -> {
+			if (!entry.getValue().key.equals(key))
+				return;
 			if (!forward.contains(entry.getValue())) {
 				forward.add(entry.getValue());
 			}
@@ -116,7 +120,7 @@ public class Chapter extends ChapterId {
 			);
 			if (!id.valid())
 				continue;
-			text = text.replace(matcher.group(), id.getAsLink());
+			text = text.replace(matcher.group(), id.getAsLink(true));
 		}
 	}
 
@@ -124,9 +128,9 @@ public class Chapter extends ChapterId {
 		return String.format("<div class=\"back-links\">%s</div>%n" + (
 				title.isEmpty() ? "" : String.format("<div class=\"chapter-title\">%s</div>", title)
 				) + "<div class=\"chapter-text\">%s</div><div class=\"forward-links\">%s</div>",
-				back.stream().map(ChapterId::getAsLink).collect(Collectors.joining(" || ")),
+				back.stream().map(ch -> ch.getAsLink(false)).collect(Collectors.joining(" || ")),
 				text.replaceAll("\n", "<br>"),
-				forward.stream().map(ChapterId::getAsLink).collect(Collectors.joining(" || "))
+				forward.stream().map(ch -> ch.getAsLink(true)).collect(Collectors.joining(" || "))
 		);
 	}
 

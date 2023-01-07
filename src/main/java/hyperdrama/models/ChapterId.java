@@ -18,9 +18,9 @@ public class ChapterId {
 		return order > 0;
 	}
 
-	public String getAsLink() {
+	public String getAsLink(boolean forwards) {
 		return String.format("<a href=\"./%s.html\">%s</a> ",
-				getId(), title.isEmpty() ? "CONTINUE" : title
+				getId(), title.isEmpty() ? (forwards ? "CONTINUE" : "BACK") : title
 		);
 	}
 
