@@ -83,6 +83,7 @@ type Story = {
 ```
 All files in a project folder will be read and merged (with potential overwrites) into a single story object
 that is then used to build the structure of the story.  
-A log file is also produced that outlines the building process and eventual overwrites and potential issues.  
+A log file is produced that outlines the building process, eventual overwrites and other potential issues.
+
 
 
