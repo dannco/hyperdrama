@@ -4,11 +4,19 @@ Given one or more input files in a folder, produces a network of interconnected 
 one for each declared chapter.  
 Each chapter has a key and a value for its chronological order in the story, and will by default link to the nearest previous and following chapter in the same story line, if they exist.  
 E.g. story line BLUE can have chapters with order values 1, 5, 10, 50, and 100. Chapter BLUE:10 will link back to BLUE:5 and forwards to BLUE:50.
-Additionally, each chapter may also link to however many other chapters across all declared story lines.  
+In chapter BLUE:100, as it is the last declared chapter in that story line, it will be interpreted as a finished story
+with no default link to continue.  
+Aside from the default back and forward movement through story-lines, chapters may also link to any number
+of other chapters across all declared story lines in the same story project.  
+Links declared in ``back`` will find a chapter by its key and value is equal to or nearest below the declared order value.
+For example, a back-link ``{ key: "RED", order 100}`` might actually link back to ``{ key: "RED", order 98}``
+if there is no RED chapter with the order value of `100`  
+Links declared in ``forward`` will work largely the same, only they will try and find a chapter whose order value
+is equal to or nearest above the indicated value.
 
 Chapter texts can implement two types of placeholders:
 - Text injection: formatted as ``$<KEY>``, e.g. ``$RED_INTRO``, inserts snippets of text that have been
-declared and stored for that key. 
+declared with a key in the ``texts``-object in the input file. 
   - Text injection can be useful to maintain consistency for texts that are supposed to be identical
    across multiple story lines, like dialogue, broadcasts etc. 
  Declaring such texts once means you only need to update it in one place.
@@ -32,7 +40,7 @@ declared and stored for that key.
     ``` 
 - In-text chapter links: formatted as ``@<KEY>(<TEXT>)``, inserts a hyperlink with the declared
 text to another story line's chapter whose order value is the highest value 
-above or equal to the chapter which this link is inserted into
+below or equal to the chapter which this link is inserted into
   - adding ``:<ORDER>`` at the end will override the current chapter's order value,
  and will instead try and find the chapter 
  with the order value equal to or closest value below the declared value.  
