@@ -72,11 +72,11 @@ type Story = {
         description: string;
         author: string[];
     },
-    chapters: ChapterId & { 
+    chapters: (ChapterId & { 
         text: string;
         back?: ChapterId[],
         forward?: ChapterId[]
-    }[],
+    })[],
     texts: { // key - value map to store values for text injection
         [key: string]: string;
     }
